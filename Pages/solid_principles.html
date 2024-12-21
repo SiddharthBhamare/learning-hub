@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SOLID Principles</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>SOLID Principles</h1>
+    </header>
+
+    <main>
+        <section>
+            <p>The SOLID principles are the foundation of object-oriented programming and design. They help ensure that code is maintainable, reusable, and scalable.</p>
+        </section>
+
+        <section>
+            <h2>1. Single Responsibility Principle (SRP)</h2>
+            <p><strong>Definition:</strong> A class should have only one reason to change. This means that a class should only focus on one responsibility or task.</p>
+            <h3>Code Example:</h3>
+            <pre class="code-example"><code>class InvoiceGenerator {
+    public void GenerateInvoice() {
+        // Code to generate invoice
+    }
+}
+
+class InvoicePrinter {
+    public void PrintInvoice() {
+        // Code to print invoice
+    }
+}</code></pre>
+            <h3>Explanation:</h3>
+            <p>The above example separates the responsibility of generating and printing invoices into two distinct classes.</p>
+        </section>
+
+        <section>
+            <h2>2. Open/Closed Principle (OCP)</h2>
+            <p><strong>Definition:</strong> Software entities (classes, modules, functions) should be open for extension but closed for modification. This ensures that you can add new functionality without altering existing code.</p>
+            <h3>Code Example:</h3>
+            <pre class="code-example"><code>interface IShape {
+    double CalculateArea();
+}
+
+class Circle : IShape {
+    public double Radius { get; set; }
+    public double CalculateArea() => Math.PI * Radius * Radius;
+}
+
+class Rectangle : IShape {
+    public double Length { get; set; }
+    public double Breadth { get; set; }
+    public double CalculateArea() => Length * Breadth;
+}</code></pre>
+            <h3>Explanation:</h3>
+            <p>The <code>IShape</code> interface allows adding new shapes without modifying existing classes.</p>
+        </section>
+
+        <section>
+            <h2>3. Liskov Substitution Principle (LSP)</h2>
+            <p><strong>Definition:</strong> Subclasses should be substitutable for their base classes.</p>
+            <h3>Code Example:</h3>
+            <pre class="code-example"><code>class Bird {
+    public virtual void Fly() {
+        Console.WriteLine("I can fly");
+    }
+}
+
+class Sparrow : Bird {}
+
+class Ostrich : Bird {
+    public override void Fly() {
+        throw new InvalidOperationException("Ostriches cannot fly");
+    }
+}</code></pre>
+            <h3>Problem:</h3>
+            <p>The above code violates LSP because the <code>Ostrich</code> class cannot behave like a <code>Bird</code> in all contexts.</p>
+            <h3>Solution:</h3>
+            <p>Introduce a new interface or class hierarchy to separate flying and non-flying birds.</p>
+        </section>
+
+        <section>
+            <h2>4. Interface Segregation Principle (ISP)</h2>
+            <p><strong>Definition:</strong> Clients should not be forced to depend on methods they do not use.</p>
+            <h3>Code Example:</h3>
+            <pre class="code-example"><code>interface IPrinter {
+    void Print();
+}
+
+interface IScanner {
+    void Scan();
+}
+
+class MultiFunctionPrinter : IPrinter, IScanner {
+    public void Print() => Console.WriteLine("Printing...");
+    public void Scan() => Console.WriteLine("Scanning...");
+}
+
+class BasicPrinter : IPrinter {
+    public void Print() => Console.WriteLine("Printing...");
+}</code></pre>
+            <h3>Explanation:</h3>
+            <p>Here, the interface segregation ensures that classes only implement methods they need.</p>
+        </section>
+
+        <section>
+            <h2>5. Dependency Inversion Principle (DIP)</h2>
+            <p><strong>Definition:</strong> High-level modules should not depend on low-level modules. Both should depend on abstractions.</p>
+            <h3>Code Example:</h3>
+            <pre class="code-example"><code>interface IMessageSender {
+    void SendMessage(string message);
+}
+
+class EmailSender : IMessageSender {
+    public void SendMessage(string message) => Console.WriteLine($"Email sent: {message}");
+}
+
+class Notification {
+    private readonly IMessageSender _messageSender;
+    public Notification(IMessageSender messageSender) {
+        _messageSender = messageSender;
+    }
+    public void Notify(string message) => _messageSender.SendMessage(message);
+}</code></pre>
+            <h3>Explanation:</h3>
+            <p>The <code>Notification</code> class depends on an abstraction (<code>IMessageSender</code>) instead of a concrete class (<code>EmailSender</code>).</p>
+        </section>
+
+        <section class="faq">
+            <h2>FAQs and Questions</h2>
+            <h3>Q: Why are SOLID principles important?</h3>
+            <p>They ensure maintainable, testable, and scalable code, reducing technical debt.</p>
+
+            <h3>Q: How do you apply SRP in a real project?</h3>
+            <p>By breaking down large classes into smaller classes, each responsible for a single task.</p>
+        </section>
+
+        <a href="index.html">Back to Table of Contents</a>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 SOLID Principles. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

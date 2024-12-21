@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Server Interview Guide - JSON Handling</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>SQL Server Interview Guide - JSON Handling</h1>
+    </header>
+
+    <!-- Main Content Section -->
+    <div class="container">
+        <h2>JSON Handling in SQL Server - Questions and Answers</h2>
+
+        <!-- Feature Cards for JSON Handling -->
+        <div class="feature-cards">
+            <div class="feature-card">
+                <div class="number">1</div>
+                <div>
+                    <h3>How does SQL Server handle JSON?</h3>
+                    <p>SQL Server provides functions to parse, read, and write JSON data. You can store JSON data in a string column and use built-in functions to query it.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">2</div>
+                <div>
+                    <h3>What are the JSON functions available in SQL Server?</h3>
+                    <p>SQL Server provides several functions to work with JSON, such as <code>JSON_VALUE</code>, <code>JSON_QUERY</code>, and <code>OPENJSON</code>.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">3</div>
+                <div>
+                    <h3>How do you extract a value from a JSON string in SQL Server?</h3>
+                    <p>You can use the <code>JSON_VALUE</code> function to extract a scalar value from a JSON string.</p>
+                    <pre><code>SELECT JSON_VALUE('{"name":"John", "age":30}', '$.name');</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">4</div>
+                <div>
+                    <h3>How do you return a JSON array in SQL Server?</h3>
+                    <p>You can use the <code>JSON_QUERY</code> function to return a JSON array or object.</p>
+                    <pre><code>SELECT JSON_QUERY('{"names":["John", "Jane", "Alice"]}', '$.names');</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">5</div>
+                <div>
+                    <h3>How do you insert JSON data into SQL Server?</h3>
+                    <p>You can insert JSON data into a column of type <code>NVARCHAR</code>.</p>
+                    <pre><code>INSERT INTO Users (UserData) VALUES ('{"name":"John", "age":30}');</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Link -->
+    <p><a href="sql.html">Back to Table of Contents</a></p>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 SQL Server Interview Guide</p>
+    </footer>
+</body>
+</html>

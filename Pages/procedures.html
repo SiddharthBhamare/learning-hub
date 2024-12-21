@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Server Interview Guide - Stored Procedures</title>
+      <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>SQL Server Interview Guide - Stored Procedures</h1>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <h2>Stored Procedures - Questions and Answers</h2>
+        <div>
+            <h3>What is a Stored Procedure?</h3>
+            <p>A stored procedure is a set of precompiled SQL statements that can be executed as a single unit. They are used to encapsulate repetitive tasks and improve performance.</p>
+        </div>
+        <div>
+            <h3>How do you create a Stored Procedure in SQL Server?</h3>
+            <p>You can create a stored procedure using the <code>CREATE PROCEDURE</code> statement.</p>
+            <pre><code>CREATE PROCEDURE GetStudentInfo
+AS
+SELECT * FROM Students;</code></pre>
+        </div>
+        <div>
+            <h3>How do you execute a Stored Procedure?</h3>
+            <p>You execute a stored procedure using the <code>EXEC</code> command.</p>
+            <pre><code>EXEC GetStudentInfo;</code></pre>
+        </div>
+        <div>
+            <h3>What is a parameterized Stored Procedure?</h3>
+            <p>A parameterized stored procedure allows you to pass values to the procedure when it is executed.</p>
+            <pre><code>CREATE PROCEDURE GetStudentInfoByID
+    @StudentID INT
+AS
+SELECT * FROM Students WHERE ID = @StudentID;</code></pre>
+        </div>
+        <div>
+            <h3>What is an OUTPUT parameter in SQL Server?</h3>
+            <p>An OUTPUT parameter is used to return values from a stored procedure back to the calling program.</p>
+            <pre><code>CREATE PROCEDURE GetStudentCount
+    @Count INT OUTPUT
+AS
+SELECT @Count = COUNT(*) FROM Students;</code></pre>
+        </div>
+        <div>
+            <h3>How do you handle errors in Stored Procedures?</h3>
+            <p>You can handle errors in stored procedures using the <code>TRY...CATCH</code> block.</p>
+            <pre><code>BEGIN TRY
+    -- Code that may cause error
+END TRY
+BEGIN CATCH
+    -- Error handling code
+END CATCH;</code></pre>
+        </div>
+        <div>
+            <h3>What is a Nested Stored Procedure?</h3>
+            <p>A nested stored procedure is a stored procedure that calls another stored procedure.</p>
+            <pre><code>CREATE PROCEDURE NestedProc
+AS
+BEGIN
+    EXEC AnotherProc;
+END;</code></pre>
+        </div>
+
+        <!-- New Sections for SQL Functions -->
+        <h2>SQL Functions - Interview Questions</h2>
+        <div>
+            <h3>What is a SQL Function?</h3>
+            <p>A SQL function is a stored program that you can use to encapsulate complex business logic. Functions can return a single value, or a table, and can be used in SELECT queries, WHERE clauses, etc.</p>
+        </div>
+        <div>
+            <h3>How do you create a Function in SQL Server?</h3>
+            <p>You can create a function using the <code>CREATE FUNCTION</code> statement.</p>
+            <pre><code>CREATE FUNCTION GetStudentCount()
+RETURNS INT
+AS
+BEGIN
+    RETURN (SELECT COUNT(*) FROM Students);
+END;</code></pre>
+        </div>
+        <div>
+            <h3>How do you execute a SQL Function?</h3>
+            <p>You can execute a SQL function by calling it in a query.</p>
+            <pre><code>SELECT dbo.GetStudentCount();</code></pre>
+        </div>
+
+        <h2>Difference Between SQL Function and SQL Procedure</h2>
+        <div>
+            <h3>Return Type:</h3>
+            <p>A function returns a single value or a table, while a stored procedure does not return a value by default.</p>
+        </div>
+        <div>
+            <h3>Usage:</h3>
+            <p>Functions can be used in SELECT, WHERE, and HAVING clauses, while stored procedures are used to perform an operation or task (e.g., inserting, updating data).</p>
+        </div>
+        <div>
+            <h3>Transaction Control:</h3>
+            <p>Stored procedures can have transaction control (COMMIT, ROLLBACK), whereas functions cannot manage transactions.</p>
+        </div>
+        <div>
+            <h3>Side Effects:</h3>
+            <p>Functions should not modify data, while stored procedures can modify data and perform complex operations.</p>
+        </div>
+
+        <h2>When to Use a Function vs. a Stored Procedure?</h2>
+        <div>
+            <h3>Use Functions when:</h3>
+            <p>You need to return a value that can be used directly in SQL queries (e.g., SELECT, WHERE), and when the operation does not modify data.</p>
+        </div>
+        <div>
+            <h3>Use Stored Procedures when:</h3>
+            <p>You need to perform operations such as inserting, updating, or deleting data, and when you need to manage transactions or handle errors explicitly.</p>
+        </div>
+
+        <h2>Performance Considerations</h2>
+        <div>
+            <h3>Performance of Functions:</h3>
+            <p>Functions, especially scalar functions, may cause performance issues because they are executed row-by-row in a query. However, table-valued functions can perform better when used correctly.</p>
+        </div>
+        <div>
+            <h3>Performance of Stored Procedures:</h3>
+            <p>Stored procedures are usually more efficient than functions because they are precompiled and do not require the overhead of being executed within a query.</p>
+        </div>
+        <div>
+            <h3>Optimizing Performance:</h3>
+            <p>To optimize performance, avoid using scalar functions in SELECT queries, and use table-valued functions when needed. For stored procedures, keep them simple and ensure they do not perform unnecessary operations.</p>
+        </div>
+        <p><a href="sql.html">Back to Table of Contents</a></p>
+    </main>
+
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 SQL Server Interview Guide</p>
+    </footer>
+</body>
+</html>

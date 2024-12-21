@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GraphQL with HotChocolate</title>
+     <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>GraphQL with HotChocolate</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>What is GraphQL?</h2>
+            <p>GraphQL is a query language for APIs and a runtime for executing those queries with your existing data.
+                It allows clients to request exactly the data they need, improving performance and reducing over-fetching.</p>
+        </section>
+
+        <section>
+            <h2>Setting Up HotChocolate</h2>
+            <p>HotChocolate is a .NET GraphQL server implementation that supports both schema-first and code-first
+                approaches. To set up HotChocolate in your project, follow these steps:</p>
+            <pre><code>
+1. Install the HotChocolate NuGet package:
+   dotnet add package HotChocolate.AspNetCore
+
+2. Create a GraphQL schema class:
+   public class Query
+   {
+       public string Hello() => "Hello, World!";
+   }
+
+3. Configure GraphQL in Startup.cs:
+   public void ConfigureServices(IServiceCollection services)
+   {
+       services.AddGraphQL(sp => SchemaBuilder.New().AddQueryType<Query>());
+   }
+
+4. Add the GraphQL endpoint in Configure method:
+   app.UseRouting();
+   app.UseEndpoints(endpoints =>
+   {
+       endpoints.MapGraphQL();
+   });
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>Schema-First vs Code-First</h2>
+            <p>With HotChocolate, you can choose between schema-first and code-first approaches:</p>
+            <div class="Key-feature-cards">
+                <div class="key-feature-card">
+                    <p><strong>Schema-First:</strong> You define the schema using GraphQL SDL (Schema Definition Language) and implement resolvers.</p>
+                </div>
+                <div class="key-feature-card">
+                    <p><strong>Code-First:</strong> You define your schema using C# code and rely on reflection to create the schema.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Example Query</h2>
+            <p>Once your GraphQL API is set up, you can query data like this:</p>
+            <pre><code>
+query {
+   hello
+}
+            </code></pre>
+            <p>This would return:</p>
+            <pre><code>
+{
+  "data": {
+    "hello": "Hello, World!"
+  }
+}
+            </code></pre>
+        </section>
+
+        <div>
+            <h3>What’s Included in the Tutorial?</h3>
+            <p>This tutorial will walk you through a simple example of a Restaurant Order Management System using EntityFramework Core, SQL, and GraphQL. You'll learn how to:</p>
+            <div class="parent-feature-card">
+                <div >
+                    1. Set up a basic GraphQL server with HotChocolate in a .NET environment.
+                    <br>2. Create a data model using Entity Framework Core.
+                    <br>3. Define queries and mutations for your GraphQL API to interact with the database.
+                    <br>4. Integrate SQL with GraphQL for efficient data fetching and manipulation.
+                    <br>5. The tutorial is important as it demonstrates a full-fledged, real-world scenario where you combine GraphQL and SQL databases to create a seamless API for managing complex systems like a restaurant's order processing.
+                    <br>6. For a comprehensive tutorial on mastering GraphQL with HotChocolate, check out this 
+                        <a href="https://www.linkedin.com/pulse/copy-mastering-graphql-hotchocolate-c-comprehensive-tutorial-bhamare-dj1rf/?trackingId=Uohycr2%2BQzinfVVO2vjsjQ%3D%3D"
+                        target="_blank">LinkedIn Tutorial</a>
+                        <br>
+                </div>
+            </div>
+            <p><strong>Why this tutorial is important:</strong> This guide not only provides practical steps to implement GraphQL with HotChocolate but also explains key concepts like integrating with SQL databases and managing real-world business logic in the restaurant order management system. This will give you hands-on experience and knowledge of full-stack development with modern technologies.</p>
+           
+        </div>
+    </main>
+	<a href="index.html">Back to Table of Contents</a>
+
+    <footer>
+        <p>© 2024 GraphQL with HotChocolate Guide</p>
+    </footer>
+</body>
+
+</html>

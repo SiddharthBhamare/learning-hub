@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Server Interview Guide - Common Table Expressions (CTE)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>SQL Server Interview Guide - Common Table Expressions (CTE)</h1>
+    </header>
+    <div class="container">
+        <h2>Common Table Expressions (CTE) - Questions and Answers</h2>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <div class="number">1</div>
+                <div>
+                    <h3>What is a Common Table Expression (CTE)?</h3>
+                    <p>A CTE is a temporary result set that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement. It improves the readability and maintainability of SQL queries.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">2</div>
+                <div>
+                    <h3>How do you define a CTE?</h3>
+                    <p>You define a CTE using the <code>WITH</code> keyword followed by the CTE's name and the query that produces the result set.</p>
+                    <pre><code>WITH CTE AS
+(
+    SELECT ID, Name FROM Students
+)
+SELECT * FROM CTE;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">3</div>
+                <div>
+                    <h3>What is a recursive CTE?</h3>
+                    <p>A recursive CTE is a CTE that references itself. It is used to perform hierarchical or recursive queries.</p>
+                    <pre><code>WITH RecursiveCTE AS
+(
+    SELECT ID, Name, ParentID FROM Employees WHERE ParentID IS NULL
+    UNION ALL
+    SELECT e.ID, e.Name, e.ParentID FROM Employees e
+    INNER JOIN RecursiveCTE r ON e.ParentID = r.ID
+)
+SELECT * FROM RecursiveCTE;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">4</div>
+                <div>
+                    <h3>What is the difference between a CTE and a subquery?</h3>
+                    <p>A CTE improves readability and allows for recursion, whereas a subquery is a nested query within a SELECT, INSERT, UPDATE, or DELETE statement.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">5</div>
+                <div>
+                    <h3>Can you update data using a CTE?</h3>
+                    <p>Yes, you can use a CTE in an UPDATE statement to modify data.</p>
+                    <pre><code>WITH CTE AS
+(
+    SELECT ID, Name FROM Students WHERE Age = 20
+)
+UPDATE CTE SET Age = 21;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">6</div>
+                <div>
+                    <h3>Can you use a CTE with INSERT or DELETE statements?</h3>
+                    <p>Yes, you can use CTEs with INSERT, UPDATE, or DELETE statements to modify data.</p>
+                    <pre><code>WITH CTE AS
+(
+    SELECT ID, Name FROM Students WHERE Age > 18
+)
+DELETE FROM CTE;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">7</div>
+                <div>
+                    <h3>What is the advantage of using CTEs over subqueries?</h3>
+                    <p>CTEs are easier to read and maintain, especially in complex queries. They can also be reused multiple times within a query.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p><a href="sql.html">Back to Table of Contents</a></p>
+
+    <footer>
+        <p>&copy; 2024 SQL Server Interview Guide</p>
+    </footer>
+</body>
+</html>

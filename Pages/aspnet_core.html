@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASP.NET Core</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <header> <h1>ASP.NET Core</h1></header>
+    <p>ASP.NET Core is a cross-platform, high-performance framework for building modern, cloud-enabled, and internet-connected applications.</p>
+
+    <h2>1. Middleware</h2>
+    <p>**Definition:** Middleware are components that are executed in a pipeline to handle HTTP requests and responses.</p>
+
+    <h3>Pipeline Setup</h3>
+    <pre><code>
+public class Startup {
+    public void Configure(IApplicationBuilder app) {
+        app.Use(async (context, next) => {
+            Console.WriteLine("Request handled by custom middleware");
+            await next();
+            Console.WriteLine("Response handled by custom middleware");
+        });
+
+        app.Run(async context => {
+            await context.Response.WriteAsync("Hello, ASP.NET Core!");
+        });
+    }
+}
+    </code></pre>
+
+    <h3>Custom Middleware</h3>
+    <pre><code>
+public class CustomMiddleware {
+    private readonly RequestDelegate _next;
+
+    public CustomMiddleware(RequestDelegate next) {
+        _next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context) {
+        Console.WriteLine("Custom Middleware Executed");
+        await _next(context);
+    }
+}
+
+public static class MiddlewareExtensions {
+    public static IApplicationBuilder UseCustomMiddleware(this IApplicationBuilder builder) {
+        return builder.UseMiddleware&lt;CustomMiddleware&gt;();
+    }
+}
+    </code></pre>
+
+    <h2>2. Web API</h2>
+    <p>**Definition:** Web APIs are used to create RESTful services that clients can consume.</p>
+
+    <h3>Controllers and Routing</h3>
+    <pre><code>
+[ApiController]
+[Route("api/[controller]")]
+public class ProductsController : ControllerBase {
+    [HttpGet]
+    public IActionResult GetAllProducts() {
+        return Ok(new[] { "Product1", "Product2" });
+    }
+}
+    </code></pre>
+
+    <h3>Versioning</h3>
+    <pre><code>
+services.AddApiVersioning(options => {
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+});
+    </code></pre>
+
+    <h2>3. MVC</h2>
+    <p>**Definition:** MVC separates application logic into Model, View, and Controller layers.</p>
+
+    <h3>Model</h3>
+    <pre><code>
+public class Product {
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+}
+    </code></pre>
+
+    <h3>View</h3>
+    <pre><code>
+@model Product
+&lt;h1&gt;@Model.Name&lt;/h1&gt;
+&lt;p&gt;Price: @Model.Price&lt;/p&gt;
+    </code></pre>
+
+    <h3>Controller</h3>
+    <pre><code>
+public class ProductController : Controller {
+    public IActionResult Index() {
+        var product = new Product { Id = 1, Name = "Laptop", Price = 1500.00M };
+        return View(product);
+    }
+}
+    </code></pre>
+
+    <h2>4. Dependency Injection</h2>
+    <p>**Definition:** ASP.NET Core has a built-in DI container for injecting dependencies into classes.</p>
+
+    <h3>Services Lifecycle</h3>
+    <div class="feature-cards">
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><b>Transient:</b><br> Created each time they are requested.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><b>Scoped:</b><br> Created once per request.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><b>Singleton:</b><br> Created once per application lifetime.</p>
+        </div>
+    </div>
+    <h3>Example</h3>
+    <pre><code>
+public interface IGreetingService {
+    string Greet(string name);
+}
+
+public class GreetingService : IGreetingService {
+    public string Greet(string name) => $"Hello, {name}";
+}
+
+public class HomeController : Controller {
+    private readonly IGreetingService _greetingService;
+
+    public HomeController(IGreetingService greetingService) {
+        _greetingService = greetingService;
+    }
+
+    public IActionResult Index() {
+        var message = _greetingService.Greet("World");
+        return Content(message);
+    }
+}
+
+// Register service in Program.cs
+builder.Services.AddTransient&lt;IGreetingService, GreetingService&gt;();
+    </code></pre>
+
+    <h2>FAQs</h2>
+    <h3>Q: What is middleware in ASP.NET Core?</h3>
+    <p>Middleware are components that process requests and responses in the HTTP pipeline.</p>
+
+    <h3>Q: How is dependency injection implemented in ASP.NET Core?</h3>
+    <p>Using the built-in DI container, dependencies are registered in `Program.cs` and injected into controllers or services.</p>
+
+    <h3>Q: What is the difference between MVC and Web API?</h3>
+    <p>MVC is used for creating web applications with UI, while Web API is used for creating RESTful services.</p>
+
+    
+<div>
+<div><a href="index.html">Back to Table of Contents</a></div>
+	 <footer>
+        <p>&copy; 2024 ASP.NET Core.</p>
+    </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOP Concepts</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header><h1>Object-Oriented Programming (OOP) Concepts</h1></header>
+    <p>Object-Oriented Programming is a programming paradigm based on the concept of "objects," which contain data and methods. The four fundamental principles of OOP are Abstraction, Encapsulation, Inheritance, and Polymorphism.</p>
+
+    <section>
+        <h2>1. Abstraction</h2>
+        <p><strong>Definition:</strong> Abstraction is the process of hiding the implementation details and showing only the essential features of an object.</p>
+        <h3>Real-World Example:</h3>
+        <p>Think of a <strong>car</strong>. When driving, you use the steering wheel and pedals but don't need to know how the engine works.</p>
+        <h3>Code Example:</h3>
+        <pre><code>
+abstract class Shape {
+    public abstract double CalculateArea();
+}
+
+class Circle : Shape {
+    public double Radius { get; set; }
+    public override double CalculateArea() => Math.PI * Radius * Radius;
+}
+
+class Rectangle : Shape {
+    public double Length { get; set; }
+    public double Breadth { get; set; }
+    public override double CalculateArea() => Length * Breadth;
+}
+        </code></pre>
+        <h3>Explanation:</h3>
+        <p>The <code>Shape</code> class provides an abstract definition, and specific shapes implement their area calculation logic.</p>
+    </section>
+
+    <section>
+        <h2>2. Encapsulation</h2>
+        <p><strong>Definition:</strong> Encapsulation is the bundling of data (fields) and methods (functions) that operate on the data into a single unit, typically a class. It also restricts direct access to some components.</p>
+        <h3>Code Example:</h3>
+        <pre><code>
+class BankAccount {
+    private double balance;
+
+    public double GetBalance() => balance;
+
+    public void Deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+
+    public void Withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+        }
+    }
+}
+        </code></pre>
+        <h3>Explanation:</h3>
+        <p>The <code>BankAccount</code> class encapsulates the balance field and provides controlled access through methods.</p>
+    </section>
+
+    <section>
+        <h2>3. Inheritance</h2>
+        <p><strong>Definition:</strong> Inheritance is a mechanism where one class acquires the properties and methods of another class.</p>
+        <h3>Code Example:</h3>
+        <pre><code>
+class Vehicle {
+    public void Start() => Console.WriteLine("Vehicle is starting...");
+}
+
+class Car : Vehicle {
+    public void Drive() => Console.WriteLine("Car is driving...");
+}
+        </code></pre>
+        <h3>Explanation:</h3>
+        <p>The <code>Car</code> class inherits the <code>Start</code> method from the <code>Vehicle</code> class.</p>
+        <h3>Use Cases:</h3>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <span class="number">-</span>                
+                <p><b>Code Reusability :</b><br>Utilize inheritance to inherit functionality from a parent class.</p>
+            </div>
+            <div class="feature-card">
+                <span class="number">-</span>
+                <p> <b></b>Polymorphism :</b><br>Achieve dynamic behavior by overriding methods in subclasses.</p>
+            </div>
+        </div>        
+        
+    </section>
+
+    <section>
+        <h2>4. Polymorphism</h2>
+        <p><strong>Definition:</strong> Polymorphism allows one interface to be used for different data types. It can be achieved through method overloading or overriding.</p>
+        <h3>Code Example (Method Overloading):</h3>
+        <pre><code>
+class Calculator {
+    public int Add(int a, int b) => a + b;
+
+    public double Add(double a, double b) => a + b;
+}
+        </code></pre>
+        <h3>Code Example (Method Overriding):</h3>
+        <pre><code>
+class Animal {
+    public virtual void Speak() => Console.WriteLine("Animal makes a sound");
+}
+
+class Dog : Animal {
+    public override void Speak() => Console.WriteLine("Dog barks");
+}
+        </code></pre>
+        <h3>Explanation:</h3>
+        <p>In the first example, the <code>Add</code> method is overloaded to handle different parameter types. In the second, the <code>Speak</code> method is overridden to provide specific behavior for the <code>Dog</code> class.</p>
+    </section>
+
+    <section>
+        <h2>FAQs and Questions</h2>
+        <h3>Q: What is the difference between abstraction and encapsulation?</h3>
+        <p><strong>Abstraction</strong> focuses on hiding implementation details, while <strong>Encapsulation</strong> focuses on bundling data and methods into a class and restricting direct access to them.</p>
+
+        <h3>Q: How is inheritance different from polymorphism?</h3>
+        <p><strong>Inheritance</strong> allows a class to acquire the properties and methods of another class, while <strong>Polymorphism</strong> allows methods to behave differently based on the object that invokes them.</p>
+
+        <h3>Q: Can you give an example where polymorphism is useful?</h3>
+        <p>Polymorphism is useful in scenarios like designing a shape hierarchy where each shape can implement its own version of an <code>Area()</code> method, but they can all be used interchangeably via a common base class.</p>
+    </section>
+
+    <a href="index.html">Back to Table of Contents</a>
+
+    <footer>
+        <p>© 2024 OOP Concepts Guide</p>
+    </footer>
+
+</body>
+</html>

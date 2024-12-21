@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Server Interview Guide - Performance Tuning, Error Handling, Partitioning</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>SQL Server Interview Guide - Performance Tuning, Error Handling, Partitioning</h1>
+    </header>
+    
+    <div class="container">
+        <h2>Performance Tuning</h2>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <div class="number">1</div>
+                <div>
+                    <h3>What is indexing in SQL Server?</h3>
+                    <p>Indexing is a technique used to speed up the retrieval of rows from a table by creating a data structure that allows faster searches.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">2</div>
+                <div>
+                    <h3>What types of indexes are available in SQL Server?</h3>
+                    <p>SQL Server supports several types of indexes, including clustered, non-clustered, and full-text indexes.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">3</div>
+                <div>
+                    <h3>What is a query execution plan?</h3>
+                    <p>A query execution plan is a set of steps SQL Server takes to execute a query. You can view it using SQL Server Management Studio (SSMS) to analyze and optimize query performance.</p>
+                    <pre><code>EXPLAIN SELECT * FROM Users;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">4</div>
+                <div>
+                    <h3>How do you improve query performance in SQL Server?</h3>
+                    <p>You can improve query performance by optimizing indexes, avoiding unnecessary joins, using proper data types, and analyzing execution plans.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>Error Handling</h2>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <div class="number">5</div>
+                <div>
+                    <h3>What is the role of TRY...CATCH in SQL Server?</h3>
+                    <p>The TRY...CATCH block is used to handle exceptions in SQL Server. The code inside the TRY block is executed, and if an error occurs, the CATCH block handles it.</p>
+                    <pre><code>
+BEGIN TRY
+    -- Your SQL code here
+END TRY
+BEGIN CATCH
+    -- Error handling code here
+END CATCH
+                    </code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">6</div>
+                <div>
+                    <h3>How do you log errors in SQL Server?</h3>
+                    <p>You can log errors using the <code>ERROR_MESSAGE()</code>, <code>ERROR_NUMBER()</code>, and other error functions inside the CATCH block.</p>
+                    <pre><code>
+BEGIN CATCH
+    PRINT ERROR_MESSAGE();
+END CATCH
+                    </code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">7</div>
+                <div>
+                    <h3>What is the difference between <code>RAISEERROR</code> and <code>THROW</code>?</h3>
+                    <p><code>RAISEERROR</code> is used to generate custom error messages, while <code>THROW</code> is used to throw an error that was previously caught.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>Partitioning</h2>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <div class="number">8</div>
+                <div>
+                    <h3>What is table partitioning in SQL Server?</h3>
+                    <p>Table partitioning involves splitting a large table into smaller, more manageable pieces, called partitions, based on a partition key.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">9</div>
+                <div>
+                    <h3>What are the benefits of partitioning?</h3>
+                    <p>Partitioning improves query performance, manageability, and helps with archiving data by distributing data across multiple filegroups.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">10</div>
+                <div>
+                    <h3>How do you create a partitioned table?</h3>
+                    <p>You create a partitioned table using the <code>PARTITION SCHEME</code> and <code>PARTITION FUNCTION</code> in SQL Server.</p>
+                    <pre><code>
+CREATE PARTITION FUNCTION MyPartitionFunction (int)
+AS RANGE LEFT FOR VALUES (1, 1000, 2000);
+
+CREATE PARTITION SCHEME MyPartitionScheme
+AS PARTITION MyPartitionFunction
+TO ([Primary], [Secondary], [Tertiary]);
+                    </code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">11</div>
+                <div>
+                    <h3>What are some partitioning strategies in SQL Server?</h3>
+                    <p>Some partitioning strategies include range, list, and hash partitioning, depending on the type of data distribution needed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <p><a href="sql.html">Back to Table of Contents</a></p>
+
+    <footer>
+        <p>&copy; 2024 SQL Server Interview Guide</p>
+    </footer>
+</body>
+</html>

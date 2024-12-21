@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CI/CD Pipelines and Unit Testing with XUnit</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>CI/CD Pipelines and Unit Testing with XUnit</h1>
+        <p class="subtitle">Automating Integration, Deployment, and Testing for Better Software Development</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>What is CI/CD?</h2>
+            <p>CI/CD stands for Continuous Integration and Continuous Deployment. It’s a method to automate the software development lifecycle by integrating code changes, running automated tests, and deploying applications quickly and reliably. CI/CD pipelines help ensure that the software is always in a deployable state and can be pushed to production without manual intervention.</p>
+        </section>
+
+        <section>
+            <h2>Setting Up CI/CD Pipelines</h2>
+            <p>To set up a CI/CD pipeline for your project, you can choose from popular platforms such as Azure DevOps, GitHub Actions, or Jenkins. Below is an example configuration for an Azure DevOps YAML pipeline:</p>
+            <pre><code>
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '7.x'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    projects: '**/*.csproj'
+    publishWebProjects: true
+    zipAfterPublish: true
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'YourAzureSubscription'
+    appName: 'YourAppName'
+    package: $(System.DefaultWorkingDirectory)/**/*.zip
+            </code></pre>
+            <p>This pipeline automatically triggers on changes to the `main` branch, restores dependencies, builds, publishes, and deploys the application to Azure Web App.</p>
+        </section>
+<section><section>
+    <h2>CI/CD Pipeline Configuration</h2>
+    <p>The following YAML configuration defines a basic CI/CD pipeline for a .NET Core application. This pipeline automates several stages: restoring dependencies, building the application, publishing it, and deploying it to an Azure Web App.</p>
+    <div class="feature-cards">
+        <div class="feature-card">
+            <span class="number">-</span>                
+       <p> <strong>trigger:</strong>
+         <br>Defines when the pipeline should run. In this case, it triggers when changes are pushed to the "main" branch.
+       </p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><strong>pool:</strong><br> Specifies the virtual machine image to use for the pipeline's execution. Here, we use an Ubuntu image.</p>
+
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><strong>steps:</strong> <br>Lists the tasks the pipeline should execute. These tasks include restoring dependencies, building the application, and deploying it to Azure.</p>
+        </div>
+    </div>      
+    <ul>
+    </ul>
+    <p>Let's break down each task in the pipeline:</p>
+    <div class="feature-cards">
+        <div class="feature-card">
+            <span class="number">-</span>  
+        <p><strong>UseDotNet@2:</strong> <br>This task installs the specified .NET SDK version (in this case, 7.x) on the pipeline agent.</p>
+
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>  
+            <p><strong>DotNetCoreCLI@2 (restore):</strong><br> This task restores the NuGet packages for all the projects in the solution. It ensures all dependencies are available for the build process.</p>
+
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>  
+            <p><strong>DotNetCoreCLI@2 (build):</strong><br> Builds the solution, compiling the code and generating the output necessary for the next stage.</p>
+
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>  
+            <p><strong>DotNetCoreCLI@2 (publish):</strong><br> Publishes the application for deployment. It prepares the application for deployment by creating a zip file containing the necessary files for an Azure Web App.</p>
+
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>  
+            <p><strong>AzureWebApp@1:</strong><br> Deploys the published application to an Azure Web App. This task uses an Azure subscription to deploy the packaged app to the specified Azure Web App.</p>
+
+        </div>
+    </div>
+    <h3>Complete YAML Example:</h3>
+    <pre><code>
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '7.x'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    projects: '**/*.csproj'
+    publishWebProjects: true
+    zipAfterPublish: true
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'YourAzureSubscription'
+    appName: 'YourAppName'
+    package: $(System.DefaultWorkingDirectory)/**/*.zip
+    </code></pre>
+    <p>This configuration ensures that each step is executed in the correct order, ensuring a smooth CI/CD pipeline for your application. Once the pipeline is set up, every time changes are made to the "main" branch, the application will automatically be built and deployed to Azure.</p>
+</section>
+</section>
+        <section>
+            <h2>Benefits of CI/CD</h2>
+            <div class="Key-feature-cards">
+                <div class="key-feature-card">
+                    Automates testing and deployment, reducing manual errors and improving efficiency.
+                </div>
+                <div class="key-feature-card">
+                 Improves code quality by integrating changes frequently and testing early.
+                    
+                </div>
+                <div class="key-feature-card">
+                    Accelerates the software development lifecycle, delivering faster releases to production.
+                </div>
+                    <div class="key-feature-card">
+                        Reduces the risk of deployment failures by ensuring constant validation of code.
+                    </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Unit Testing with XUnit</h2>
+            <p>XUnit is a powerful unit testing framework for .NET applications. It supports test discovery, assertions, and setup/teardown functionalities, making it a great tool for writing and running unit tests efficiently.</p>
+        </section>
+
+        <section>
+            <h2>Setting Up XUnit</h2>
+            <p>To get started with XUnit in your .NET project, follow these steps:</p>
+            <pre><code>
+1. Install the XUnit NuGet package:
+   dotnet add package xunit
+
+2. Create a test class:
+   using Xunit;
+
+   public class CalculatorTests
+   {
+       [Fact]
+       public void Add_TwoNumbers_ReturnsSum()
+       {
+           var calculator = new Calculator();
+           var result = calculator.Add(1, 2);
+           Assert.Equal(3, result);
+       }
+   }
+            </code></pre>
+            <p>This basic test checks that the `Add` method of the `Calculator` class correctly returns the sum of two numbers.</p>
+        </section>
+
+        <section>
+            <h2>Test Assertions</h2>
+            <p>XUnit provides a variety of assertion methods to validate your test results:</p>
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <span class="number">-</span>  
+                    <p><code>Assert.Equal(expected, actual)</code> - Compares two values for equality.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="number">-</span>  
+                    <p><code>Assert.True(condition)</code> - Verifies that a condition is true.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="number">-</span>  
+                    <p><code>Assert.False(condition)</code> - Verifies that a condition is false.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="number">-</span>  
+                    <p><code>Assert.NotNull(object)</code> - Ensures that an object is not null.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="number">-</span>  
+                    <p><code>Assert.Null(object)</code> - Ensures that an object is null.</p>
+                </div>
+            </div>
+            <p>These assertions are crucial for verifying the behavior of your application and ensuring it functions as expected.</p>
+        </section>
+
+        <section>
+            <h2>Running Tests</h2>
+            <p>You can run your XUnit tests using the .NET CLI or through Visual Studio. To run tests via the .NET CLI, execute the following command:</p>
+            <pre><code>dotnet test</code></pre>
+            <p>This command will automatically discover and run all tests in your project, providing detailed results in the console.</p>
+        </section>
+		<section>
+    <h2>Unit Testing and the AAA Pattern</h2>
+    <p>Unit testing is an essential practice in software development. It ensures that individual components of an application work as expected. One of the most widely used patterns for writing unit tests is the <strong>AAA pattern (Arrange, Act, Assert)</strong>.</p>
+    <p>The AAA pattern breaks down unit tests into three steps:</p>
+
+    <div class="feature-cards">
+        <div class="feature-card">
+            <span class="number">-</span>  
+            <p><strong>Arrange:</strong> Prepare the necessary objects, set up the data, and mock dependencies.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>  
+            <p><strong>Act:</strong> Execute the method or action that you want to test.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>  
+            <p><strong>Assert:</strong> Verify that the outcome matches the expected result.</p>
+        </div>
+    </div>
+    <p>Here's an example of using the AAA pattern in a unit test:</p>
+    <pre><code>
+public class CalculatorTests
+{
+    [Fact]
+    public void Add_TwoNumbers_ReturnsSum()
+    {
+        // Arrange
+        var calculator = new Calculator();
+        
+        // Act
+        var result = calculator.Add(2, 3);
+        
+        // Assert
+        Assert.Equal(5, result);
+    }
+}
+    </code></pre>
+    <p>In this test:</p>
+    <div class="feature-cards">
+        <div class="feature-card">
+            <span class="number">-</span>  
+            <p>In the <strong>Arrange</strong> step, we create an instance of the <code>Calculator</code> class.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>  
+            <p>In the <strong>Act</strong> step, we call the <code>Add</code> method with two numbers.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>  
+            <p>In the <strong>Assert</strong> step, we verify that the sum of the two numbers equals 5.</p>
+        </div>
+    </div>
+    <p>The AAA pattern promotes clarity in unit tests, ensuring that each part of the test is easily understandable and maintainable.</p>
+</section>
+<section>
+    <h2>Mock Framework - Moq</h2>
+    <p><strong>Moq</strong> is a popular mocking framework for .NET used in unit testing. It allows you to mock objects and simulate behavior for testing without needing to rely on actual implementations of dependencies.</p>
+    <p>In this section, we'll demonstrate how to use Moq for mocking interfaces and verifying interactions in unit tests.</p>
+
+    <h3>Mocking an Interface with Moq</h3>
+    <p>Suppose we have a service that relies on an interface for data access. We can use Moq to mock this interface and test the service's behavior.</p>
+    <pre><code>
+public interface IDataService
+{
+    int GetData();
+}
+
+public class MyService
+{
+    private readonly IDataService _dataService;
+
+    public MyService(IDataService dataService)
+    {
+        _dataService = dataService;
+    }
+
+    public int ProcessData()
+    {
+        var data = _dataService.GetData();
+        return data * 2; // Processing data by multiplying it by 2
+    }
+}
+    </code></pre>
+
+    <h3>Unit Test with Moq</h3>
+    <p>Here's how we can write a unit test using Moq to mock the <code>IDataService</code> interface:</p>
+    <pre><code>
+using Moq;
+using Xunit;
+
+public class MyServiceTests
+{
+    [Fact]
+    public void ProcessData_CallsGetData_ReturnsProcessedData()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        mockDataService.Setup(ds => ds.GetData()).Returns(5); // Mocking GetData to return 5
+
+        var service = new MyService(mockDataService.Object);
+
+        // Act
+        var result = service.ProcessData();
+
+        // Assert
+        Assert.Equal(10, result); // Expected value after processing
+    }
+}
+    </code></pre>
+
+    <p>In this example:</p>
+    <div class="feature-cards">
+        <div class="feature-card">
+            <span class="number">-</span>  
+            <p>We use Moq to mock the <code>IDataService</code> interface and specify that <code>GetData</code> should return 5.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>  
+        <p>The unit test verifies that the <code>ProcessData</code> method correctly processes the data by multiplying it by 2.</p>
+        </div>
+    </div>
+    <h3>Data-Driven Testing with InlineData</h3>
+    <p>Data-driven tests allow you to run the same test with different input values. In XUnit, you can use the <code>[InlineData]</code> attribute to provide multiple data sets for a single test method.</p>
+    <pre><code>
+public class CalculatorTests
+{
+    [Theory]
+    [InlineData(2, 3, 5)]  // Test case 1: Add 2 and 3, expect 5
+    [InlineData(-1, 1, 0)]  // Test case 2: Add -1 and 1, expect 0
+    [InlineData(0, 0, 0)]   // Test case 3: Add 0 and 0, expect 0
+    public void Add_TwoNumbers_ReturnsExpectedSum(int num1, int num2, int expectedSum)
+    {
+        // Arrange
+        var calculator = new Calculator();
+
+        // Act
+        var result = calculator.Add(num1, num2);
+
+        // Assert
+        Assert.Equal(expectedSum, result);
+    }
+}
+    </code></pre>
+
+    <p>In this example, the same <code>Add</code> method is tested with different sets of input data, allowing for easy validation of multiple scenarios without writing separate test methods.</p>
+
+    <h3>Mocking Multiple Interfaces</h3>
+    <p>Mocking multiple interfaces in a single test can be necessary when the class under test depends on more than one service. Here's how to mock multiple interfaces:</p>
+    <pre><code>
+public interface IOrderService
+{
+    void PlaceOrder(string product);
+}
+
+public interface IInventoryService
+{
+    bool CheckInventory(string product);
+}
+
+public class OrderProcessor
+{
+    private readonly IOrderService _orderService;
+    private readonly IInventoryService _inventoryService;
+
+    public OrderProcessor(IOrderService orderService, IInventoryService inventoryService)
+    {
+        _orderService = orderService;
+        _inventoryService = inventoryService;
+    }
+
+    public void ProcessOrder(string product)
+    {
+        if (_inventoryService.CheckInventory(product))
+        {
+            _orderService.PlaceOrder(product);
+        }
+    }
+}
+    </code></pre>
+
+    <p>Here's how we can mock both <code>IOrderService</code> and <code>IInventoryService</code>:</p>
+    <pre><code>
+public class OrderProcessorTests
+{
+    [Fact]
+    public void ProcessOrder_InventoryAvailable_PlacesOrder()
+    {
+        // Arrange
+        var mockOrderService = new Mock<IOrderService>();
+        var mockInventoryService = new Mock<IInventoryService>();
+        
+        mockInventoryService.Setup(i => i.CheckInventory("Laptop")).Returns(true);
+        var orderProcessor = new OrderProcessor(mockOrderService.Object, mockInventoryService.Object);
+
+        // Act
+        orderProcessor.ProcessOrder("Laptop");
+
+        // Assert
+        mockOrderService.Verify(os => os.PlaceOrder("Laptop"), Times.Once);
+    }
+}
+    </code></pre>
+
+    <p>In this case:</p>
+    <div class="feature-cards">
+        <div class="feature-card">
+            <span class="number">-</span>  
+        <p>We mock both the <code>IOrderService</code> and <code>IInventoryService</code> interfaces.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>  
+        <p>We verify that the <code>PlaceOrder</code> method is called once when the inventory check passes.</p>
+        </div>
+    </div>
+</section>
+
+    </main>
+ <a href="index.html">Back to Table of Contents</a>
+
+    <footer>
+        <p>&copy; 2024 CI/CD Guide - A comprehensive guide to Continuous Integration, Deployment, and Testing</p>
+    </footer>
+</body>
+
+</html>

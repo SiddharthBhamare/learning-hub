@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Server Interview Guide - Joins</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>SQL Server Interview Guide - Joins</h1>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <h2>SQL Server Joins - Questions and Answers</h2>
+
+        <!-- Feature Cards for SQL Joins -->
+        <div class="feature-cards">
+            <div class="feature-card">
+                <div class="number">1</div>
+                <div>
+                    <h3>What is a JOIN in SQL Server?</h3>
+                    <p>A JOIN clause is used to combine rows from two or more tables based on a related column between them.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">2</div>
+                <div>
+                    <h3>What is the difference between INNER JOIN and OUTER JOIN?</h3>
+                    <p>An INNER JOIN returns only the rows that have matching values in both tables. An OUTER JOIN returns all the rows from one table, and the matched rows from the other table. If there is no match, the result is NULL.</p>
+                    <pre><code>SELECT * FROM Orders INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID;</code></pre>
+                    <pre><code>SELECT * FROM Orders LEFT OUTER JOIN Customers ON Orders.CustomerID = Customers.CustomerID;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">3</div>
+                <div>
+                    <h3>What is a LEFT JOIN?</h3>
+                    <p>A LEFT JOIN (or LEFT OUTER JOIN) returns all records from the left table and the matched records from the right table. If there is no match, NULL values are returned for columns from the right table.</p>
+                    <pre><code>SELECT * FROM Employees LEFT JOIN Departments ON Employees.DeptID = Departments.DeptID;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">4</div>
+                <div>
+                    <h3>What is a RIGHT JOIN?</h3>
+                    <p>A RIGHT JOIN (or RIGHT OUTER JOIN) returns all records from the right table and the matched records from the left table. If there is no match, NULL values are returned for columns from the left table.</p>
+                    <pre><code>SELECT * FROM Employees RIGHT JOIN Departments ON Employees.DeptID = Departments.DeptID;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">5</div>
+                <div>
+                    <h3>What is a FULL OUTER JOIN?</h3>
+                    <p>A FULL OUTER JOIN returns all rows when there is a match in either the left or right table. If there is no match, NULL values are returned for the columns that do not have a match.</p>
+                    <pre><code>SELECT * FROM Employees FULL OUTER JOIN Departments ON Employees.DeptID = Departments.DeptID;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">6</div>
+                <div>
+                    <h3>What is a CROSS JOIN?</h3>
+                    <p>A CROSS JOIN returns the Cartesian product of the two tables. It will combine all rows from the first table with all rows from the second table.</p>
+                    <pre><code>SELECT * FROM Products CROSS JOIN Suppliers;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">7</div>
+                <div>
+                    <h3>What is a SELF JOIN?</h3>
+                    <p>A SELF JOIN is a regular join but the table is joined with itself.</p>
+                    <pre><code>SELECT A.Name AS Employee, B.Name AS Manager
+FROM Employees A, Employees B
+WHERE A.ManagerID = B.EmployeeID;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Table of Contents Link -->
+        <p><a href="sql.html">Back to Table of Contents</a></p>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 SQL Server Interview Guide</p>
+    </footer>
+</body>
+</html>

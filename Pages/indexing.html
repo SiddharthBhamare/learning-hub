@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Server Interview Guide</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>SQL Server Interview Guide</h1>
+    </header>
+    <div class="container">
+        <h2>SQL Server Indexing - Questions and Answers</h2>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <div class="number">1</div>
+                <div>
+                    <h3>What is an index in SQL Server?</h3>
+                    <p>An index in SQL Server is a database object that improves the speed of data retrieval operations on a table at the cost of additional space and decreased performance on data modification operations.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">2</div>
+                <div>
+                    <h3>What are the types of indexes in SQL Server?</h3>
+                    <p>The two primary types of indexes in SQL Server are clustered and non-clustered indexes. A clustered index determines the physical order of rows, while non-clustered indexes are separate structures.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">3</div>
+                <div>
+                    <h3>How do you create an index in SQL Server?</h3>
+                    <p>You can create an index using the <code>CREATE INDEX</code> statement.</p>
+                    <pre><code>CREATE INDEX idx_student_name
+ON Students(Name);</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">4</div>
+                <div>
+                    <h3>What is a clustered index?</h3>
+                    <p>A clustered index sorts and stores the data rows in the table or view based on the index key. A table can only have one clustered index.</p>
+                    <pre><code>CREATE CLUSTERED INDEX idx_student_id
+ON Students(ID);</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">5</div>
+                <div>
+                    <h3>What is a non-clustered index?</h3>
+                    <p>A non-clustered index creates a separate structure from the data table and points to the physical location of data. A table can have multiple non-clustered indexes.</p>
+                    <pre><code>CREATE NONCLUSTERED INDEX idx_student_name
+ON Students(Name);</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">6</div>
+                <div>
+                    <h3>What is a unique index?</h3>
+                    <p>A unique index ensures that the values in the indexed column(s) are unique, preventing duplicate values.</p>
+                    <pre><code>CREATE UNIQUE INDEX idx_unique_student_email
+ON Students(Email);</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">7</div>
+                <div>
+                    <h3>What is a composite index?</h3>
+                    <p>A composite index is an index that includes multiple columns in its key. It helps optimize queries that filter or sort by those columns.</p>
+                    <pre><code>CREATE INDEX idx_student_fullname
+ON Students(FirstName, LastName);</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">8</div>
+                <div>
+                    <h3>How does an index improve performance?</h3>
+                    <p>Indexes improve the performance of SELECT queries by allowing SQL Server to quickly locate and retrieve the required data without scanning the entire table.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">9</div>
+                <div>
+                    <h3>What is index fragmentation?</h3>
+                    <p>Index fragmentation occurs when the logical order of the index pages does not match the physical order of the pages, leading to inefficient data retrieval.</p>
+                    <pre><code>-- Reorganize fragmented index
+ALTER INDEX idx_student_name ON Students REORGANIZE;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p><a href="sql.html">Back to Table of Contents</a></p>
+    <footer>
+        <p>&copy; 2024 SQL Server Interview Guide</p>
+    </footer>
+</body>
+</html>

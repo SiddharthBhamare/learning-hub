@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Patterns</title>
+	 <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="content">
+       <header> <h1>Design Patterns</h1> </header>
+        <p>Design patterns provide solutions to common software design problems. They are categorized into <strong>Creational</strong>, <strong>Structural</strong>, and <strong>Behavioral</strong> patterns.</p>
+
+        <h2>1. Singleton Pattern</h2>
+        <p><strong>Definition:</strong> Ensures that a class has only one instance and provides a global point of access to it.</p>
+        <h3>Real-World Analogy:</h3>
+        <p>A <strong>government</strong> can have only one central authority (singleton), accessible by everyone.</p>
+        <h3>Code Example (Thread-Safe Singleton):</h3>
+        <pre><code>
+public sealed class Singleton {
+    private static Singleton _instance = null;
+    private static readonly object _lock = new object();
+
+    private Singleton() { }
+
+    public static Singleton Instance {
+        get {
+            lock (_lock) {
+                if (_instance == null) {
+                    _instance = new Singleton();
+                }
+                return _instance;
+            }
+        }
+    }
+}
+        </code></pre>
+        <h3>Explanation:</h3>
+        <p>The <code>lock</code> ensures thread safety, and the private constructor prevents instantiation from outside.</p>
+        <h3>Use Cases:</h3>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <span class="number">-</span>
+                <p>Logging</p>
+            </div>
+            <div class="feature-card">
+                <span class="number">-</span>
+               <br> <p>Configuration management</p>
+            </div>
+            <div class="feature-card">
+                <span class="number">-</span>
+               <br> <p>Thread pools</p>
+            </div>
+        </div>       
+        
+        <h2>2. Factory Pattern</h2>
+        <p><strong>Definition:</strong> Provides an interface for creating objects without specifying the exact class.</p>
+        <h3>Real-World Analogy:</h3>
+        <p>A <strong>vehicle factory</strong> can produce different types of vehicles (e.g., cars, bikes) without the client knowing the exact implementation.</p>
+        <h3>Code Example:</h3>
+        <pre><code>
+public interface IVehicle {
+    void Drive();
+}
+
+public class Car : IVehicle {
+    public void Drive() => Console.WriteLine("Driving a car");
+}
+
+public class Bike : IVehicle {
+    public void Drive() => Console.WriteLine("Riding a bike");
+}
+
+public class VehicleFactory {
+    public static IVehicle GetVehicle(string vehicleType) {
+        return vehicleType switch {
+            "Car" => new Car(),
+            "Bike" => new Bike(),
+            _ => throw new ArgumentException("Invalid vehicle type")
+        };
+    }
+}
+       </code> </pre>
+        <h3>Explanation:</h3>
+        <p>The factory method <code>GetVehicle</code> abstracts the creation logic from the client.</p>
+        <h3>Use Cases:</h3>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <span class="number">-</span>
+                <p>Decoupling object creation from the client code.</p>
+            </div>
+            <div class="feature-card">
+                <span class="number">-</span>
+                <p>Creating objects with a shared interface.</p>
+            </div>
+        </div>
+        <h2>3. Observer Pattern</h2>
+        <p><strong>Definition:</strong> Defines a one-to-many dependency between objects, where one object notifies others of state changes.</p>
+        <h3>Real-World Analogy:</h3>
+        <p>A <strong>news publisher</strong> (subject) notifies subscribers (observers) about new articles.</p>
+        <h3>Code Example:</h3>
+        <pre><code>
+public interface IObserver {
+    void Update(string message);
+}
+
+public class Subscriber : IObserver {
+    private string _name;
+
+    public Subscriber(string name) {
+        _name = name;
+    }
+
+    public void Update(string message) {
+        Console.WriteLine($"{_name} received update: {message}");
+    }
+}
+
+public class Publisher {
+    private List<IObserver> _observers = new List<IObserver>();
+
+    public void Subscribe(IObserver observer) => _observers.Add(observer);
+    public void Unsubscribe(IObserver observer) => _observers.Remove(observer);
+
+    public void Notify(string message) {
+        foreach (var observer in _observers) {
+            observer.Update(message);
+        }
+    }
+}
+       </code> </pre>
+        <h3>Explanation:</h3>
+        <p>The <code>Publisher</code> manages a list of <code>Subscriber</code> objects and notifies them of updates.</p>
+        <h3>Use Cases:</h3>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <span class="number">-</span>
+                <p>Event handling systems</p>
+            </div>
+            <div class="feature-card">
+                <span class="number">-</span>
+                <p>Real-time updates</p>
+            </div>
+        </div>
+        <h2>4. Builder Pattern</h2>
+        <p><strong>Definition:</strong> Separates the construction of a complex object from its representation.</p>
+        <h3>Real-World Analogy:</h3>
+        <p>A <strong>burger shop</strong> allows customers to build burgers by choosing ingredients step by step.</p>
+        <h3>Code Example:</h3>
+        <pre><code>
+public class Burger {
+    public string Bun { get; set; }
+    public string Patty { get; set; }
+    public bool Cheese { get; set; }
+    public bool Lettuce { get; set; }
+}
+
+public class BurgerBuilder {
+    private Burger _burger = new Burger();
+
+    public BurgerBuilder AddBun(string bun) {
+        _burger.Bun = bun;
+        return this;
+    }
+
+    public BurgerBuilder AddPatty(string patty) {
+        _burger.Patty = patty;
+        return this;
+    }
+
+    public BurgerBuilder AddCheese() {
+        _burger.Cheese = true;
+        return this;
+    }
+
+    public BurgerBuilder AddLettuce() {
+        _burger.Lettuce = true;
+        return this;
+    }
+
+    public Burger Build() => _burger;
+}
+     </code>   </pre>
+        <h3>Explanation:</h3>
+        <p>The <code>BurgerBuilder</code> allows for step-by-step creation of a <code>Burger</code> object.</p>
+        <h3>Use Cases:</h3>
+        <div class="feature-cards">
+            <div class="feature-card">
+                <span class="number">-</span>
+                <p>Creating objects with many optional parameters.</p>
+            </div>
+            <div class="feature-card">
+                <span class="number">-</span>
+                <p>Building complex UI elements.</p>
+            </div>
+        </div>
+        <div class="faq">
+            <h2>FAQs and Questions</h2>
+            <h3>Q: When should I use the Singleton pattern?</h3>
+            <p>Use Singleton when you need exactly one instance of a class, such as for managing configuration or logging.</p>
+
+            <h3>Q: How does the Factory pattern differ from the Builder pattern?</h3>
+            <p>The Factory pattern focuses on creating objects, while the Builder pattern focuses on step-by-step construction of a complex object.</p>
+
+            <h3>Q: Can I combine patterns like Singleton and Factory?</h3>
+            <p>Yes, you can combine patterns. For instance, a Factory can use a Singleton to ensure a single instance of certain objects.</p>
+        </div>
+ <a href="index.html">Back to Table of Contents</a>
+        <footer class="footer">
+          <p>© 2024 Design Patterns
+        </footer>
+    </div>
+</body>
+
+</html>

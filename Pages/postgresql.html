@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostgreSQL Interview Questions</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>PostgreSQL Interview Questions</h1>
+           </header>
+
+    <div class="container">
+        <section id="indexing">
+            <h2>Indexing</h2>
+            <div class="question">
+                <p><strong>Question:</strong> How do you create an index on a column in PostgreSQL?</p>
+                <pre><code>CREATE INDEX idx_column_name ON table_name(column_name);</code></pre>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> Explain the difference between B-Tree and GIN indexes in PostgreSQL.</p>
+                <p><strong>Answer:</strong> B-Tree indexes are used for equality and range queries, while GIN indexes are used for complex data types like full-text search and JSONB. GIN is efficient for multi-key searches.</p>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> How can you check if an index is being used in a query?</p>
+                <pre><code>EXPLAIN ANALYZE SELECT * FROM table_name WHERE column_name = 'value';</code></pre>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> How do you create a unique index?</p>
+                <pre><code>CREATE UNIQUE INDEX unique_idx_name ON table_name(column_name);</code></pre>
+            </div>
+        </section>
+
+        <section id="jsonb">
+            <h2>JSONB Columns</h2>
+            <div class="question">
+                <p><strong>Question:</strong> How do you query data from a JSONB column?</p>
+                <pre><code>SELECT data ->> 'key' AS value
+FROM table_name
+WHERE data ->> 'key' = 'value';</code></pre>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> How do you index a JSONB column for efficient search?</p>
+                <pre><code>CREATE INDEX idx_jsonb_data ON table_name USING gin(data jsonb_path_ops);</code></pre>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> How do you update a specific key in a JSONB column?</p>
+                <pre><code>UPDATE table_name
+SET data = jsonb_set(data, '{key}', '"new_value"', true)
+WHERE id = 1;</code></pre>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> How do you delete a key from a JSONB column?</p>
+                <pre><code>UPDATE table_name
+SET data = data - 'key'
+WHERE id = 1;</code></pre>
+            </div>
+        </section>
+
+        <section id="date">
+            <h2>Date-Related Queries</h2>
+            <div class="question">
+                <p><strong>Question:</strong> How do you find records within a specific date range?</p>
+                <pre><code>SELECT *
+FROM table_name
+WHERE date_column BETWEEN '2023-01-01' AND '2023-12-31';</code></pre>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> How do you calculate the difference between two dates?</p>
+                <pre><code>SELECT age('2023-12-31', '2023-01-01') AS difference;</code></pre>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> How do you extract the month and year from a date column?</p>
+                <pre><code>SELECT EXTRACT(MONTH FROM date_column) AS month,
+       EXTRACT(YEAR FROM date_column) AS year
+FROM table_name;</code></pre>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> How do you add or subtract days from a date?</p>
+                <pre><code>SELECT date_column + INTERVAL '7 days' AS new_date
+FROM table_name;</code></pre>
+            </div>
+        </section>
+
+        <section id="scenarios">
+            <h2>Complex Scenarios</h2>
+            <div class="question">
+                <p><strong>Question:</strong> How do you find duplicate records in a table?</p>
+                <pre><code>SELECT column1, column2, COUNT(*)
+FROM table_name
+GROUP BY column1, column2
+HAVING COUNT(*) > 1;</code></pre>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> How do you handle pagination in PostgreSQL?</p>
+                <pre><code>SELECT *
+FROM table_name
+ORDER BY column_name
+LIMIT 10 OFFSET 20;</code></pre>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> Write a query to update JSONB data for all rows matching a condition.</p>
+                <pre><code>UPDATE table_name
+SET data = jsonb_set(data, '{key}', '"new_value"', true)
+WHERE data ->> 'key' = 'old_value';</code></pre>
+            </div>
+
+            <div class="question">
+                <p><strong>Question:</strong> How do you retrieve hierarchical data (e.g., employees and managers)?</p>
+                <pre><code>WITH RECURSIVE employee_hierarchy AS (
+    SELECT employee_id, manager_id, 1 AS level
+    FROM employees
+    WHERE manager_id IS NULL
+    UNION ALL
+    SELECT e.employee_id, e.manager_id, eh.level + 1
+    FROM employees e
+    JOIN employee_hierarchy eh ON e.manager_id = eh.employee_id
+)
+SELECT *
+FROM employee_hierarchy;</code></pre>
+            </div>
+        </section>
+    </div>
+ <a href="index.html">Back to Table of Contents</a>
+
+    <footer>
+        <p>© 2024 PostgreSQL Interview Preparation Guide</p>
+    </footer>
+</body>
+</html>

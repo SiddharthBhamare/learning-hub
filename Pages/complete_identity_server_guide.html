@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview of the STS Service</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Overview of the STS Service</h1>
+    </header>
+    <main>
+        <section>
+            <h2>What is an STS?</h2>
+            <p>A Security Token Service (STS) is an independent service responsible for authenticating users and generating security tokens, such as JWTs, for secure communication between applications.</p>
+        </section>
+        <section>
+            <h2>Key Features</h2>
+          
+            <div class="Key-feature-cards">
+                <div class="key-feature-card">`
+                    <p><b>User authentication</b></p>
+                </div>
+                <div class="key-feature-card">
+                    <p><b>Token generation (JWTs)</b></p>
+                </div>
+                <div class="key-feature-card">
+                    <p><b>Centralized authentication for multiple apps</b></p>
+                </div>
+                <div class="key-feature-card">
+                    <p><b>Role and claim-based authorization</b></p>
+                </div>
+            </div>
+        </section>
+		<section>
+		 <h1>Architecture and Workflow</h1>
+		 <section>
+            <h2>System Architecture</h2>
+            <p>The STS acts as a centralized service for user authentication and token issuance. Applications and APIs interact with the STS for validating users and accessing resources securely.</p>
+        </section>
+        <section>
+            <h2>Workflow</h2>
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <span class="number">-</span>
+                    <p><b>The user sends their credentials to the STS.</b></p>
+                </div>
+                <div class="feature-card">
+                    <span class="number">-</span>
+                    <p><b>The STS validates the credentials.</b></p>
+                </div>
+                <div class="feature-card">
+                    <span class="number">-</span>
+                    <p><b>The STS issues a JWT with claims and roles</b></p>
+                </div>
+                <div class="feature-card">
+                    <span class="number">-</span>
+                    <p><b>Applications or APIs validate the JWT for secure access.</b></p>
+                </div>
+            </div>
+        </section>
+		</section>
+		 <section>
+		 <h1>Setting Up the STS Service</h1>
+            <h2>Prerequisites</h2>
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <span class="number">-</span>
+                    <p><b>Install .NET SDK (6.0 or later).</b></p>
+                </div>
+                <div class="feature-card">
+                    <span class="number">-</span>
+                    <p><b>
+                        Install the NuGet packages: `Duende.IdentityServer` and `Duende.IdentityServer.EntityFramework`.</b></p>
+                </div>
+                <div class="feature-card">
+                    <span class="number">-</span>
+                    <p><b>Set up a database for user storage (SQL Server, PostgreSQL, etc.).</b></p>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h2>Basic Configuration</h2>
+            <pre><code>
+// In Program.cs
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddIdentityServer(options =>
+{
+    options.EmitStaticAudienceClaim = true;
+})
+.AddInMemoryClients(Config.Clients)
+.AddInMemoryApiScopes(Config.ApiScopes)
+.AddInMemoryApiResources(Config.ApiResources)
+.AddInMemoryIdentityResources(Config.IdentityResources)
+.AddTestUsers(Config.TestUsers);
+
+var app = builder.Build();
+app.UseIdentityServer();
+app.Run();
+            </code></pre>
+            <p>This sets up the basic IdentityServer with in-memory configurations.</p>
+        </section>
+		<section>
+		<h1>Creating API Clients and Scopes</h1>
+            <h2>Defining Clients</h2>
+            <pre><code>
+public static IEnumerable<Client> Clients =>
+    new List<Client>
+    {
+        new Client
+        {
+            ClientId = "client_id",
+            AllowedGrantTypes = GrantTypes.ClientCredentials,
+            ClientSecrets = { new Secret("secret".Sha256()) },
+            AllowedScopes = { "api1" }
+        }
+    };
+            </code></pre>
+        </section>
+        <section>
+            <h2>Defining API Scopes</h2>
+            <pre><code>
+public static IEnumerable<ApiScope> ApiScopes =>
+    new List<ApiScope>
+    {
+        new ApiScope("api1", "My API")
+    };
+            </code></pre>
+        </section>
+		 <section>
+		    <h1>Securing APIs with JWT Authentication</h1>
+            <h2>Middleware Configuration</h2>
+            <pre><code>
+// In Program.cs
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.Authority = "https://localhost:5001";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+app.Run();
+            </code></pre>
+            <p>This middleware enables JWT authentication for your API.</p>
+        </section>
+        <section>
+            <h2>Adding Authorization to Controllers</h2>
+            <pre><code>
+[ApiController]
+[Route("api/[controller]")]
+public class ProtectedController : ControllerBase
+{
+    [HttpGet]
+    [Authorize]
+    public IActionResult Get()
+    {
+        return Ok("This is a protected endpoint!");
+    }
+}
+            </code></pre>
+            <p>Only authorized users with valid JWTs can access this endpoint.</p>
+        </section>
+		 
+		  <section>
+            <h2>Testing with Postman & Obtaining a Token</h2>
+            <h3>Follow these steps to get a JWT:</h3>
+            <h4><p>1. Open Postman and create a new POST request.</p>
+            <p>2. Set the URL to: <code>https://localhost:5001/connect/token</code></p>
+            <p>3. Add these form data values:</p></h4>
+            <p>CLient Id : <br><code>client_id</code>
+             <br>Client Secret : <code>client_secret</code>
+             <br>Client credentials : <code>grant_type</code>
+             <br>api1 : <code>scope</code>
+        </section>
+        <section>
+            <h2>Calling a Protected API</h2>
+            <h3>Use the token obtained in the previous step</h3>
+            <h4><p>1. Open Postman and create a new POST request.</p>
+            <p>2. Create a GET request to your API endpoint  (e.g.,) <code>https://localhost:5000/api/protected</code></p>
+            <p>3. Go to the **Authorization** tab and select **Bearer Token**.</p>
+            <p>4. Paste the token in the token field.</p>
+            <p>5. Click **Send** to call the protected endpoint.</p></h4>
+        </section>
+		   <section>
+            <h2>Adding Roles to JWT</h2>
+            <p>Include roles in the claims when issuing a token:</p>
+            <pre><code>
+// In your STS configuration
+var claims = new List<Claim>
+{
+    new Claim("role", "admin"),
+    new Claim("role", "user")
+};
+
+var token = new JwtSecurityToken(
+    issuer: "https://localhost:5001",
+    audience: "api1",
+    claims: claims,
+    expires: DateTime.UtcNow.AddHours(1),
+    signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
+);
+            </code></pre>
+        </section>
+        <section>
+			<h1>Role-based Authorization</h1>
+            <h2>Securing Endpoints by Roles</h2>
+            <p>Decorate your controller actions with the <code>[Authorize]</code> attribute:</p>
+            <pre><code>
+[Authorize(Roles = "admin")]
+[HttpGet("admin-only")]
+public IActionResult AdminOnly()
+{
+    return Ok("Welcome, Admin!");
+}
+
+[Authorize(Roles = "user")]
+[HttpGet("user-only")]
+public IActionResult UserOnly()
+{
+    return Ok("Welcome, User!");
+}
+            </code></pre>
+        </section>
+        <section>
+            <h2>Testing Role-based Access</h2>
+            <ol>
+                <li>Obtain a token with the appropriate role.</li>
+                <li>Use Postman to call endpoints and verify access based on roles.</li>
+            </ol>
+        </section>
+		
+		 <section>
+		  <h1>Database Integration for Users and Roles</h1>
+            <h2>Database Schema</h2>
+            <p>Create tables to store users and roles:</p>
+            <pre><code>
+CREATE TABLE Users (
+    UserId INT PRIMARY KEY IDENTITY,
+    Username NVARCHAR(100) NOT NULL,
+    PasswordHash NVARCHAR(256) NOT NULL
+);
+
+CREATE TABLE Roles (
+    RoleId INT PRIMARY KEY IDENTITY,
+    RoleName NVARCHAR(50) NOT NULL
+);
+
+CREATE TABLE UserRoles (
+    UserId INT NOT NULL,
+    RoleId INT NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES Users(UserId),
+    FOREIGN KEY (RoleId) REFERENCES Roles(RoleId)
+);
+            </code></pre>
+        </section>
+        <section>
+            <h2>Fetching Roles from Database</h2>
+            <p>Retrieve roles dynamically when generating tokens:</p>
+            <pre><code>
+// Example using Entity Framework
+var roles = dbContext.UserRoles
+    .Where(ur => ur.UserId == userId)
+    .Select(ur => ur.Role.RoleName)
+    .ToList();
+
+var claims = roles.Select(role => new Claim("role", role)).ToList();
+            </code></pre>
+        </section>
+        <section>
+            <h2>Storing Users</h2>
+            <p>Create a registration endpoint to save users securely:</p>
+            <pre><code>
+[HttpPost("register")]
+public IActionResult Register(RegisterRequest request)
+{
+    var user = new User
+    {
+        Username = request.Username,
+        PasswordHash = HashPassword(request.Password)
+    };
+
+    _dbContext.Users.Add(user);
+    _dbContext.SaveChanges();
+    return Ok("User registered successfully!");
+}
+            </code></pre>
+        </section>
+		  <section>
+		   <h1>OAuth2 Flows</h1>
+            <h2>Authorization Code Flow</h2>
+            <p>This flow is used when the client is a web application and the tokens need to be securely exchanged via a back channel.</p>
+            <pre><code>
+1. User logs in and authorizes the client.
+2. Authorization server redirects the user with an authorization code.
+3. Client exchanges the code for an access token via a secure back channel.
+4. Access token is used to call protected resources.
+            </code></pre>
+            <p>Example:</p>
+            <pre><code>
+// Step 1: Redirect user to authorization endpoint
+https://authserver.com/connect/authorize?
+    client_id=your_client_id&
+    redirect_uri=https://yourapp.com/callback&
+    response_type=code&
+    scope=openid profile
+
+// Step 2: Exchange code for token
+POST https://authserver.com/connect/token
+Content-Type: application/x-www-form-urlencoded
+Body:
+    client_id=your_client_id
+    client_secret=your_client_secret
+    grant_type=authorization_code
+    code=received_code
+    redirect_uri=https://yourapp.com/callback
+            </code></pre>
+        </section>
+        <section>
+            <h2>Client Credentials Flow</h2>
+            <p>This flow is used for machine-to-machine communication where no user interaction is required.</p>
+            <pre><code>
+// Request token
+POST https://authserver.com/connect/token
+Content-Type: application/x-www-form-urlencoded
+Body:
+    client_id=your_client_id
+    client_secret=your_client_secret
+    grant_type=client_credentials
+    scope=api_scope
+            </code></pre>
+        </section>
+		 <section>
+            <h2>Token Revocation</h2>
+            <p>Revoke tokens to immediately invalidate them:</p>
+            <pre><code>
+// Request
+POST https://authserver.com/connect/revocation
+Content-Type: application/x-www-form-urlencoded
+Body:
+    token=access_or_refresh_token
+    token_type_hint=access_token
+    client_id=your_client_id
+    client_secret=your_client_secret
+            </code></pre>
+        </section>
+        <section>
+            <h2>Token Introspection</h2>
+            <p>Check the validity of a token:</p>
+            <pre><code>
+// Request
+POST https://authserver.com/connect/introspect
+Content-Type: application/x-www-form-urlencoded
+Body:
+    token=access_token
+    client_id=your_client_id
+    client_secret=your_client_secret
+
+// Response
+{
+    "active": true,
+    "scope": "api_scope",
+    "username": "johndoe",
+    "exp": 1700000000
+}
+            </code></pre>
+        </section>
+        <section>
+		 <h1>Advanced Scenarios</h1>
+            <h2>Refresh Tokens</h2>
+            <p>Obtain a new access token using a refresh token:</p>
+            <pre><code>
+// Request
+POST https://authserver.com/connect/token
+Content-Type: application/x-www-form-urlencoded
+Body:
+    client_id=your_client_id
+    client_secret=your_client_secret
+    grant_type=refresh_token
+    refresh_token=your_refresh_token
+            </code></pre>
+        </section>
+		 <section>
+            <h2>What is OAuth2?</h2>
+            <p>OAuth2 is an authorization framework that allows third-party applications to access a user's resources without exposing their credentials. OAuth2 provides various flows for different use cases.</p>
+        </section>
+        <section>
+            <h2>Authorization Code Flow</h2>
+            <p>The Authorization Code Flow is used for server-side applications. It involves the user authorizing an application to access their resources, after which the application receives an authorization code that it can exchange for an access token.</p>
+            <pre><code>
+1. The client requests authorization:
+   GET /authorize?response_type=code&client_id=CLIENT_ID&redirect_uri=REDIRECT_URI
+
+2. The user is redirected to the authorization server, and upon consent, the server sends an authorization code.
+
+3. The client exchanges the authorization code for an access token:
+   POST /token
+   {
+     "grant_type": "authorization_code",
+     "code": "AUTHORIZATION_CODE",
+     "redirect_uri": "REDIRECT_URI",
+     "client_id": "CLIENT_ID",
+     "client_secret": "CLIENT_SECRET"
+   }
+            </code></pre>
+        </section>
+        <section>
+            <h2>Client Credentials Flow</h2>
+            <p>This flow is used for machine-to-machine authentication, where no user involvement is required. The client directly requests an access token using its own credentials.</p>
+            <pre><code>
+POST /token
+{
+  "grant_type": "client_credentials",
+  "client_id": "CLIENT_ID",
+  "client_secret": "CLIENT_SECRET"
+}
+            </code></pre>
+        </section>
+        <section>
+            <h2>Implicit Flow</h2>
+            <p>The Implicit Flow is used for client-side applications (e.g., single-page apps). It doesn't require exchanging an authorization code, as the access token is directly returned to the client after authorization.</p>
+            <pre><code>
+GET /authorize?response_type=token&client_id=CLIENT_ID&redirect_uri=REDIRECT_URI
+            </code></pre>
+        </section>
+        <section>
+            <h2>Refresh Token Flow</h2>
+            <p>When an access token expires, a refresh token can be used to obtain a new access token without requiring the user to reauthorize.</p>
+            <pre><code>
+POST /token
+{
+  "grant_type": "refresh_token",
+  "refresh_token": "REFRESH_TOKEN",
+  "client_id": "CLIENT_ID",
+  "client_secret": "CLIENT_SECRET"
+}
+            </code></pre>
+        </section>
+    </main>
+ <a href="index.html">Back to Table of Contents</a>
+
+    <footer>
+        <p>© 2024 STS Implementation Guide</p>
+    </footer>
+</body>
+</html>

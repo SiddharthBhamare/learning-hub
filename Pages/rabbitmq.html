@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RabbitMQ</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <header> <h1>RabbitMQ</h1> </header>
+    <p>RabbitMQ is a message broker that enables communication between services using queues and exchange patterns.</p>
+
+    <h2>1. Introduction to RabbitMQ</h2>
+    <div class="feature-cards">
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><b>Message Broker:</b><br> RabbitMQ acts as an intermediary for messaging between systems.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><b>Exchanges:</b><br> Route messages to queues based on rules.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><b>Queues:</b><br> Hold messages until they are consumed.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><b>Bindings:</b><br> Define relationships between exchanges and queues.</p>
+        </div>
+    </div>
+    <h3>Key Concepts</h3>
+    <div class="feature-cards">
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><b>Producer:</b><br> Sends messages to exchanges.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><b>Consumer:</b><br> Receives messages from queues.</p>
+        </div>
+        <div class="feature-card">
+            <span class="number">-</span>
+            <p><b>Exchange Types:</b><br> Direct, Fanout, Topic, Headers.</p>
+        </div>
+    </div>
+    <h2>2. Publish/Subscribe Pattern</h2>
+    <p>The publish/subscribe pattern broadcasts messages to multiple consumers.</p>
+
+    <h3>Setup</h3>
+    <pre><code>
+// Exchange declaration
+channel.ExchangeDeclare("logs", ExchangeType.Fanout);
+
+// Queue declaration
+var queueName = channel.QueueDeclare().QueueName;
+
+// Bind queue to exchange
+channel.QueueBind(queueName, "logs", "");
+
+// Publish message
+channel.BasicPublish("logs", "", null, Encoding.UTF8.GetBytes("Message content"));
+    </code></pre>
+
+    <h3>Consumer Code</h3>
+    <pre><code>
+var consumer = new EventingBasicConsumer(channel);
+consumer.Received += (model, ea) => {
+    var message = Encoding.UTF8.GetString(ea.Body.ToArray());
+    Console.WriteLine($"Received: {message}");
+};
+channel.BasicConsume(queueName, true, consumer);
+    </code></pre>
+
+    <h2>3. Advanced Scenarios</h2>
+
+    <h3>Dead Letter Exchanges</h3>
+    <p>Messages that cannot be processed are sent to a dead letter exchange.</p>
+    <pre><code>
+var args = new Dictionary<string, object> {
+    { "x-dead-letter-exchange", "dead_letter_exchange" }
+};
+channel.QueueDeclare("main_queue", true, false, false, args);
+    </code></pre>
+
+    <h3>Priority Queues</h3>
+    <p>Queues can prioritize messages based on metadata.</p>
+    <pre><code>
+var args = new Dictionary<string, object> {
+    { "x-max-priority", 10 }
+};
+channel.QueueDeclare("priority_queue", true, false, false, args);
+
+// Send message with priority
+var properties = channel.CreateBasicProperties();
+properties.Priority = 5;
+channel.BasicPublish("", "priority_queue", properties, Encoding.UTF8.GetBytes("Priority message"));
+    </code></pre>
+
+    <h2>FAQs</h2>
+    <h3>Q: What is RabbitMQ used for?</h3>
+    <p>RabbitMQ is used to decouple services, ensuring reliable and asynchronous communication.</p>
+
+    <h3>Q: What is the difference between a queue and an exchange?</h3>
+    <p>A queue holds messages, while an exchange routes messages to queues based on routing rules.</p>
+
+    <h3>Q: How do I handle failed messages?</h3>
+    <p>Use a dead letter exchange to capture messages that cannot be processed.</p>
+
+    <a href="index.html">Back to Table of Contents</a>
+
+ <footer>
+        <p><p>&copy; Ovierview RabbitMQ.</p>
+    </footer>
+</body>
+</html>

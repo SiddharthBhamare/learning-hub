@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Server Interview Guide - Transactions</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>SQL Server Interview Guide - Transactions</h1>
+    </header>
+    <div class="container">
+        <h2>SQL Server Transactions - Questions and Answers</h2>
+
+        <div class="feature-cards">
+            <div class="feature-card" onclick="toggleAnswer('answer1')">
+                <div class="number">1</div>
+                <div>
+                    <h3>What is a transaction in SQL Server?</h3>
+                    <p id="answer1" class="answer">A transaction is a unit of work that is performed on the database. It ensures that all operations within it are completed successfully, and if any operation fails, the transaction is rolled back.</p>
+                </div>
+            </div>
+            <div class="feature-card" onclick="toggleAnswer('answer2')">
+                <div class="number">2</div>
+                <div>
+                    <h3>What are the ACID properties of a transaction?</h3>
+                    <p id="answer2" class="answer">The ACID properties ensure that transactions are processed reliably:
+                        <div>Atomicity: All operations in a transaction are treated as a single unit.</div>
+                        <div>Consistency: The database must transition from one valid state to another.</div>
+                        <div>Isolation: Transactions do not interfere with each other.</div>
+                        <div>Durability: Once a transaction is committed, it is permanent.</div>
+                    </p>
+                </div>
+            </div>
+            <div class="feature-card" onclick="toggleAnswer('answer3')">
+                <div class="number">3</div>
+                <div>
+                    <h3>What is the COMMIT command?</h3>
+                    <p id="answer3" class="answer">The COMMIT command is used to save the changes made during the transaction to the database.</p>
+                    <pre><code>COMMIT;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card" onclick="toggleAnswer('answer4')">
+                <div class="number">4</div>
+                <div>
+                    <h3>What is the ROLLBACK command?</h3>
+                    <p id="answer4" class="answer">The ROLLBACK command is used to undo changes made during a transaction.</p>
+                    <pre><code>ROLLBACK;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card" onclick="toggleAnswer('answer5')">
+                <div class="number">5</div>
+                <div>
+                    <h3>What are the isolation levels in SQL Server?</h3>
+                    <p id="answer5" class="answer">SQL Server provides several isolation levels to control how transactions are handled:
+                        <div>READ UNCOMMITTED</div>
+                        <div>READ COMMITTED</div>
+                        <div>REPEATABLE READ</div>
+                        <div>SERIALIZABLE</div>
+                    </p>
+                </div>
+            </div>
+            <div class="feature-card" onclick="toggleAnswer('answer6')">
+                <div class="number">6</div>
+                <div>
+                    <h3>How do you begin a transaction in SQL Server?</h3>
+                    <p id="answer6" class="answer">You can begin a transaction using the <code>BEGIN TRANSACTION</code> </p>
+                </div>
+            </div>
+            <div class="feature-card" onclick="toggleAnswer('answer7')">
+                <div class="number">7</div>
+                <div>
+                    <h3>What is a savepoint in SQL Server?</h3>
+                    <p id="answer7" class="answer">A savepoint allows you to set a point within a transaction to which you can roll back, without affecting the entire transaction.</p>
+                    <pre><code>SAVE TRANSACTION savepoint_name;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card" onclick="toggleAnswer('answer8')">
+                <div class="number">8</div>
+                <div>
+                    <h3>What is the purpose of the SET IMPLICIT_TRANSACTIONS option?</h3>
+                    <p id="answer8" class="answer">The SET IMPLICIT_TRANSACTIONS option is used to automatically begin a new transaction after each SQL statement is executed.</p>
+                    <pre><code>SET IMPLICIT_TRANSACTIONS ON;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p><a href="sql.html">Back to Table of Contents</a></p>
+    <footer>
+        <p>&copy; 2024 SQL Server Interview Guide</p>
+    </footer>
+
+    <script>
+        function toggleAnswer(answerId) {
+            const answerElement = document.getElementById(answerId);
+            answerElement.style.display = answerElement.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

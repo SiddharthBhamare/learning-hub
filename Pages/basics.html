@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Server Interview Guide - Basics</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>SQL Server Interview Guide - Basics</h1>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <h2>SQL Server Basics - Questions and Answers</h2>
+
+        <!-- Feature Cards for Questions -->
+        <div class="feature-cards">
+            <div class="feature-card">
+                <div class="number">1</div>
+                <div>
+                    <h3>What is SQL Server?</h3>
+                    <p>SQL Server is a relational database management system (RDBMS) developed by Microsoft. It is used to store, manage, and retrieve data for various applications.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">2</div>
+                <div>
+                    <h3>Explain the concept of Primary Key in SQL Server.</h3>
+                    <p>A primary key is a column or a set of columns that uniquely identifies each row in a table. A primary key must contain unique values, and it cannot contain NULLs.</p>
+                    <pre><code>CREATE TABLE Students (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(50)
+);</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">3</div>
+                <div>
+                    <h3>What is the difference between a clustered and a non-clustered index?</h3>
+                    <p>A clustered index determines the physical order of data in a table. Only one clustered index can be created per table. Non-clustered indexes are separate structures from the table and can be created multiple times.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">4</div>
+                <div>
+                    <h3>What is the purpose of the SELECT statement in SQL?</h3>
+                    <p>The SELECT statement is used to query the database and retrieve data from one or more tables.</p>
+                    <pre><code>SELECT * FROM Students;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">5</div>
+                <div>
+                    <h3>What is normalization?</h3>
+                    <p>Normalization is the process of organizing data to reduce redundancy and improve data integrity. It involves dividing a database into two or more tables and defining relationships between the tables.</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">6</div>
+                <div>
+                    <h3>What is a FOREIGN KEY constraint?</h3>
+                    <p>A FOREIGN KEY constraint is used to establish and enforce a link between the data in two tables. It ensures the consistency of data by restricting the values in the foreign key column to those present in the referenced table's primary key column.</p>
+                    <pre><code>CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">7</div>
+                <div>
+                    <h3>What is the difference between UNION and UNION ALL?</h3>
+                    <p>UNION returns distinct values while UNION ALL returns all values, including duplicates.</p>
+                    <pre><code>SELECT Name FROM Students
+UNION
+SELECT Name FROM Teachers;</code></pre>
+                    <pre><code>SELECT Name FROM Students
+UNION ALL
+SELECT Name FROM Teachers;</code></pre>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="number">8</div>
+                <div>
+                    <h3>What is a view in SQL Server?</h3>
+                    <p>A view is a virtual table based on the result-set of an SQL query. It can be used to simplify complex queries or to present data in a specific format.</p>
+                    <pre><code>CREATE VIEW StudentView AS
+SELECT Name, Age FROM Students;</code></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Back Link -->
+    <p><a href="sql.html">Back to Table of Contents</a></p>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 SQL Server Interview Guide</p>
+    </footer>
+</body>
+</html>

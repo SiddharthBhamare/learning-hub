@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setting Up the STS Service</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Setting Up the STS Service</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Overview</a></li>
+            <li><a href="architecture.html">Architecture</a></li>
+            <li><a href="api_clients.html">API Clients and Scopes</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section>
+            <h2>Prerequisites</h2>
+            <ul>
+                <li>Install .NET SDK (6.0 or later).</li>
+                <li>Install the NuGet packages: `Duende.IdentityServer` and `Duende.IdentityServer.EntityFramework`.</li>
+                <li>Set up a database for user storage (SQL Server, PostgreSQL, etc.).</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Basic Configuration</h2>
+            <pre><code>
+// In Program.cs
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddIdentityServer(options =>
+{
+    options.EmitStaticAudienceClaim = true;
+})
+.AddInMemoryClients(Config.Clients)
+.AddInMemoryApiScopes(Config.ApiScopes)
+.AddInMemoryApiResources(Config.ApiResources)
+.AddInMemoryIdentityResources(Config.IdentityResources)
+.AddTestUsers(Config.TestUsers);
+
+var app = builder.Build();
+app.UseIdentityServer();
+app.Run();
+            </code></pre>
+            <p>This sets up the basic IdentityServer with in-memory configurations.</p>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 STS Implementation Guide</p>
+    </footer>
+</body>
+</html>
