@@ -188,7 +188,7 @@ footer p {
     font-size: 2em;
     font-weight: bold;
     color: #e9f0f4;
-    margin-right: 20px;
+    margin-right: 5px;
 }
 .feature-card h3 {
     font-size: 1.3em;
@@ -218,8 +218,6 @@ footer p {
     margin-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     color: #ecf0f1;
-    min-width: max-content;
-    width: 50%;
 }
 p code {
     display: block;
